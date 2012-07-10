@@ -1,0 +1,21 @@
+<h1>Sign up</h1>
+
+<% if @user.errors.any? %>
+	<% @user.errors.delete(:password_digest) %>
+<% end %>
+
+<%= form_for @user do |form| %>
+	<%= form.error_messages %>
+
+	<p>
+		<%= form.label :email_address %><br/>
+		<%= form.text_field :email_address %>
+	</p>
+
+	<p>
+		<%= form.label :password %><br/>
+		<%= form.password_field :password %>
+	</p>
+
+	<%= form.submit 'Sign up' %>
+<% end %>
