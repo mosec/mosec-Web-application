@@ -1,0 +1,3 @@
+<% human_errors = @user.errors.full_messages %>
+
+<%= human_errors.to_json.html_safe %>

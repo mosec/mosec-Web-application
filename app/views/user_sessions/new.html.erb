@@ -1,0 +1,19 @@
+<h1>Sign in</h1>
+
+<% if flash[:error] %>
+	<%= flash[:error] %>
+<% end %>
+
+<%= form_tag user_session_path do %>
+	<p>
+		<%= label_tag :email_address %><br/>
+		<%= text_field_tag 'user_session[email_address]', (params[:user_session][:email_address] if params[:user_session]) %>
+	</p>
+
+	<p>
+		<%= label_tag :password %><br/>
+		<%= password_field_tag 'user_session[password]' %>
+	</p>
+
+	<%= submit_tag 'Sign in' %>
+<% end %>

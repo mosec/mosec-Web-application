@@ -9,9 +9,16 @@ Radar::Application.routes.draw do
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
+  match '/sign_up' => 'users#new', as: :sign_up
+  match '/sign_in' => 'user_sessions#new', as: :sign_in
+  match '/logout' => 'user_sessions#destroy', as: :logout
+  match '/dashboard' => 'dashboards#show', as: :dashboard
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
+  resources :users, only: [:new, :create]
+  resource :user_session, only: [:new, :create, :destroy]
+  resource :dashboard, only: [:show]
 
   # Sample resource route with options:
   #   resources :products do
