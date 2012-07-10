@@ -17,8 +17,8 @@ development:
   encoding: unicode
   database: radar_development
   pool: 5
-  username: radar
-  password:
+  username: davidkpham
+  password: green75
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -43,13 +43,13 @@ test:
   encoding: unicode
   database: radar_test
   pool: 5
-  username: radar
-  password:
+  username: davidkpham
+  password: green75
 
 production:
   adapter: postgresql
   encoding: unicode
   database: radar_production
   pool: 5
-  username: radar
-  password:
+  username: davidkpham
+  password: green75
