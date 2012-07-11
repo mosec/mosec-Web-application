@@ -29,4 +29,17 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+
+  # Must be signed in to use this method
+  def current_phone
+    @phone ||= current_user.phones.find(cookies.signed[:phone_id]) if cookies.signed[:phone_id]
+  end
+  
+  def require_phone
+    unless current_phone
+      respond_to do |format|
+        format.json { render status: :forbidden, nothing: true }
+      end
+    end
+  end
 end

@@ -1,4 +1,8 @@
-Radar::Application.routes.draw do
+require 'resque/server'
+
+Radar::Application.routes.draw do  
+  mount Resque::Server, :at => '/resque'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -32,6 +36,11 @@ Radar::Application.routes.draw do
   #       get 'sold'
   #     end
   #   end
+  resources :phone_data, only: [] do
+    collection do
+      post :synchronize, defaults: { format: :json }
+    end
+  end
 
   # Sample resource route with sub-resources:
   #   resources :products do
