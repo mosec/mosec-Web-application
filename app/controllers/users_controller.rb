@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-	before_filter :require_no_user
+	before_filter :require_no_user, only: [:new, :create]
+	before_filter :require_user, only: [:edit, :update]
 
 	def new
 		@user = User.new
@@ -21,6 +22,22 @@ class UsersController < ApplicationController
 			redirect_to dashboard_url
 		else
 			render :new
+		end
+	end
+
+	def edit
+		@user = current_user
+	end
+
+	def update
+		@user = current_user
+
+		if @user.update_attributes(params[:user])
+      flash[:success] = 'You have successfully updated your account!'
+
+			redirect_to account_url
+		else
+			render :edit
 		end
 	end
 end

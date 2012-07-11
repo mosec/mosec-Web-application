@@ -12,11 +12,12 @@ Radar::Application.routes.draw do
   match '/sign_up' => 'users#new', as: :sign_up
   match '/sign_in' => 'user_sessions#new', as: :sign_in
   match '/logout' => 'user_sessions#destroy', as: :logout
+  match '/account' => 'users#edit', as: :account
   match '/dashboard' => 'dashboards#show', as: :dashboard
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :users, only: [:new, :create]
+  resources :users, only: [:new, :create, :edit, :update]
   resource :user_session, only: [:new, :create, :destroy]
   resource :dashboard, only: [:show]
 

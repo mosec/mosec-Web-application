@@ -1,0 +1,16 @@
+<% if flash[:success] %>
+	<%= flash[:success] %>
+<% end %>
+
+<h1>Update account</h1>
+
+<%= form_for @user do |form| %>
+	<%= render form %>
+
+	<p>
+		<%= form.label :time_zone %><br/>
+		<%= form.time_zone_select :time_zone, nil, default: @user.time_zone %>
+	</p>
+
+	<%= form.submit 'Update account' %>
+<% end %>
