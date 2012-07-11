@@ -38,3 +38,4 @@ gem 'unicorn', '~> 4.3.1'
 # gem 'debugger'
 
 gem 'dynamic_form', '~> 1.1.4'
+gem 'detect_timezone_rails', '~> 0.0.3'

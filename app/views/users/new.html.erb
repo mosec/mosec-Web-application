@@ -17,5 +17,13 @@
 		<%= form.password_field :password %>
 	</p>
 
+	<%= hidden_field_tag :dirty_time_zone %>
+
 	<%= form.submit 'Sign up' %>
 <% end %>
+
+<script>
+	$(document).ready(function() {
+		$("#dirty_time_zone").set_timezone();
+	});
+</script>

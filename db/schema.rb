@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120710221226) do
+ActiveRecord::Schema.define(:version => 20120711020035) do
 
   create_table "users", :force => true do |t|
-    t.string   "email_address",   :null => false
-    t.string   "password_digest", :null => false
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.string   "email_address",                                             :null => false
+    t.string   "password_digest",                                           :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
+    t.string   "time_zone",       :default => "Eastern Time (US & Canada)", :null => false
   end
 
   add_index "users", ["email_address"], :name => "index_users_on_email_address"
