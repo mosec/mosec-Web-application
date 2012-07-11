@@ -24,14 +24,14 @@ class UserSessionsController < ApplicationController
     else
       respond_to do |format|
         format.html {
-          flash[:error] = 'Incorrect email address and password combination'
+          flash[:error] = 'Incorrect email address and password combination.'
           
           render :new
         }
         format.json {
           @user = User.new
 
-          @user.errors[:base] << 'Incorrect email address and password combination'
+          @user.errors[:base] << 'Incorrect email address and password combination.'
           
           render status: :unauthorized, action: :create_errors
         }
