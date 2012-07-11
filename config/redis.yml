@@ -1,0 +1,2 @@
+development: localhost:6379
+production: <%= ENV['REDISTOGO_URL'] %>

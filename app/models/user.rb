@@ -5,4 +5,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true, on: :create
 
   has_secure_password
+
+  has_many :sources, dependent: :delete_all
+  has_many :phones
 end

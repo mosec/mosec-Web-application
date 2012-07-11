@@ -5,7 +5,7 @@ gem 'rails', '3.2.6'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'pg'
+gem 'pg', '~> 0.14.0'
 
 
 # Gems used only for assets and not required
@@ -20,10 +20,10 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.0.2'
 
 # To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '~> 3.0.1'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
@@ -41,3 +41,4 @@ gem 'multi_json', '~> 1.3.6'
 gem 'oj', '~> 1.3.0'
 gem 'dynamic_form', '~> 1.1.4'
 gem 'detect_timezone_rails', '~> 0.0.3'
+gem 'resque', '~> 1.21.0'

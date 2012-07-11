@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120711020035) do
+ActiveRecord::Schema.define(:version => 20120711030743) do
+
+  create_table "sources", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.string   "type",       :null => false
+    t.string   "provider",   :null => false
+    t.string   "uid",        :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "sources", ["type"], :name => "index_sources_on_type"
+  add_index "sources", ["uid", "provider"], :name => "index_sources_on_uid_and_provider"
 
   create_table "users", :force => true do |t|
     t.string   "email_address",                                             :null => false
