@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20120711033757) do
   add_index "sources", ["uid", "provider"], :name => "index_sources_on_uid_and_provider"
 
   create_table "users", :force => true do |t|
+    t.string   "full_name",                                                 :null => false
     t.string   "email_address",                                             :null => false
     t.string   "password_digest",                                           :null => false
     t.datetime "created_at",                                                :null => false
