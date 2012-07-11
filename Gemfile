@@ -37,5 +37,7 @@ gem 'unicorn', '~> 4.3.1'
 # To use debugger
 # gem 'debugger'
 
+gem 'multi_json', '~> 1.3.6'
+gem 'oj', '~> 1.3.0'
 gem 'dynamic_form', '~> 1.1.4'
 gem 'detect_timezone_rails', '~> 0.0.3'
