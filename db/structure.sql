@@ -43,13 +43,90 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: calendar_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE calendar_events (
+    id integer NOT NULL,
+    eventable_id integer NOT NULL,
+    eventable_type character varying(255) NOT NULL,
+    uid character varying(255) NOT NULL,
+    title text NOT NULL,
+    description text,
+    location text,
+    attendee_email_addresses character varying(255)[],
+    start_time integer NOT NULL,
+    end_time integer NOT NULL,
+    all_day boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE calendar_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calendar_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE calendar_events_id_seq OWNED BY calendar_events.id;
+
+
+--
+-- Name: calls; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE calls (
+    id integer NOT NULL,
+    phone_id integer NOT NULL,
+    uid character varying(255) NOT NULL,
+    call_type character varying(255) NOT NULL,
+    phone_number character varying(255) NOT NULL,
+    clean_phone_number character varying(255) NOT NULL,
+    duration integer NOT NULL,
+    "time" integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: calls_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE calls_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: calls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE calls_id_seq OWNED BY calls.id;
+
+
+--
 -- Name: contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE contacts (
     id integer NOT NULL,
-    contactable_id integer,
-    contactable_type character varying(255),
+    contactable_id integer NOT NULL,
+    contactable_type character varying(255) NOT NULL,
     uid character varying(255) NOT NULL,
     full_name character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -186,6 +263,44 @@ ALTER SEQUENCE sources_id_seq OWNED BY sources.id;
 
 
 --
+-- Name: text_messages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE text_messages (
+    id integer NOT NULL,
+    phone_id integer NOT NULL,
+    uid character varying(255) NOT NULL,
+    text_message_type character varying(255) NOT NULL,
+    thread_id character varying(255) NOT NULL,
+    phone_number character varying(255) NOT NULL,
+    clean_phone_number character varying(255) NOT NULL,
+    body text NOT NULL,
+    "time" integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: text_messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE text_messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: text_messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE text_messages_id_seq OWNED BY text_messages.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -223,6 +338,20 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY calendar_events ALTER COLUMN id SET DEFAULT nextval('calendar_events_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY calls ALTER COLUMN id SET DEFAULT nextval('calls_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq'::regclass);
 
 
@@ -251,7 +380,30 @@ ALTER TABLE ONLY sources ALTER COLUMN id SET DEFAULT nextval('sources_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY text_messages ALTER COLUMN id SET DEFAULT nextval('text_messages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: calendar_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY calendar_events
+    ADD CONSTRAINT calendar_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: calls_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY calls
+    ADD CONSTRAINT calls_pkey PRIMARY KEY (id);
 
 
 --
@@ -287,11 +439,54 @@ ALTER TABLE ONLY sources
 
 
 --
+-- Name: text_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY text_messages
+    ADD CONSTRAINT text_messages_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_calendar_events_on_eventable_id_and_eventable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_calendar_events_on_eventable_id_and_eventable_type ON calendar_events USING btree (eventable_id, eventable_type);
+
+
+--
+-- Name: index_calendar_events_on_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_calendar_events_on_uid ON calendar_events USING btree (uid);
+
+
+--
+-- Name: index_calls_on_clean_phone_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_calls_on_clean_phone_number ON calls USING btree (clean_phone_number);
+
+
+--
+-- Name: index_calls_on_phone_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_calls_on_phone_id ON calls USING btree (phone_id);
+
+
+--
+-- Name: index_calls_on_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_calls_on_uid ON calls USING btree (uid);
 
 
 --
@@ -351,6 +546,27 @@ CREATE INDEX index_sources_on_uid_and_provider ON sources USING btree (uid, prov
 
 
 --
+-- Name: index_text_messages_on_clean_phone_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_text_messages_on_clean_phone_number ON text_messages USING btree (clean_phone_number);
+
+
+--
+-- Name: index_text_messages_on_phone_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_text_messages_on_phone_id ON text_messages USING btree (phone_id);
+
+
+--
+-- Name: index_text_messages_on_uid; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_text_messages_on_uid ON text_messages USING btree (uid);
+
+
+--
 -- Name: index_users_on_email_address; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -392,3 +608,9 @@ INSERT INTO schema_migrations (version) VALUES ('20120712183051');
 INSERT INTO schema_migrations (version) VALUES ('20120712183312');
 
 INSERT INTO schema_migrations (version) VALUES ('20120712183357');
+
+INSERT INTO schema_migrations (version) VALUES ('20120712215540');
+
+INSERT INTO schema_migrations (version) VALUES ('20120712220508');
+
+INSERT INTO schema_migrations (version) VALUES ('20120712221319');

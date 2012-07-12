@@ -13,6 +13,12 @@ class PhoneDataController < ApplicationController
     case type
     when Expect.normalize_class_to_string(Contact)
       Resque.enqueue(SynchronizePhoneContacts, *job_data)
+    when Expect.normalize_class_to_string(Call)
+      Resque.enqueue(SynchronizePhoneCalls, *job_data)
+    when Expect.normalize_class_to_string(TextMessage)
+      Resque.enqueue(SynchronizePhoneTextMessages, *job_data)
+    when Expect.normalize_class_to_string(CalendarEvent)
+      Resque.enqueue(SynchronizePhoneCalendarEvents, *job_data)
     end
     
     render status: :ok, nothing: true

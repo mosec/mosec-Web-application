@@ -1,7 +1,7 @@
 class CreateContacts < ActiveRecord::Migration
   def change
     create_table :contacts do |t|
-      t.belongs_to :contactable, polymorphic: true
+      t.belongs_to :contactable, polymorphic: true, null: false
       
       t.string :uid, null: false
       t.string :full_name, null: false

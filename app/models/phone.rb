@@ -10,13 +10,16 @@ class Phone < Source
   before_create :prepare_last_synchronizeds_attribute
 
   has_many :contacts, as: :contactable, dependent: :destroy
+  has_many :calls, dependent: :delete_all
+  has_many :text_messages, dependent: :delete_all
+  has_many :calendar_events, as: :eventable, dependent: :delete_all
 
   def operating_system=(operating_system)
     self.provider = operating_system
   end
 
   def last_synchronized
-  	[contacts_last_synchronized, calls_last_synchronized, text_messages_last_synchronized, calendar_events_last_synchronized].compact!.max
+  	[contacts_last_synchronized, calls_last_synchronized, text_messages_last_synchronized, calendar_events_last_synchronized].compact.max
   end
 
   %w(contacts_last_synchronized calls_last_synchronized text_messages_last_synchronized calendar_events_last_synchronized).each do |method|
