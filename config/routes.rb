@@ -18,6 +18,7 @@ Radar::Application.routes.draw do
   match '/logout' => 'user_sessions#destroy', as: :logout
   match '/account' => 'users#edit', as: :account
   match '/dashboard' => 'dashboards#show', as: :dashboard
+  match '/services' => 'sources#index', as: :services
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

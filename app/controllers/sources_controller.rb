@@ -10,6 +10,6 @@ class SourcesController < ApplicationController
 
 		source.destroy
 
-		redirect_to sources_url
+		redirect_to services_url
 	end
 end
