@@ -39,4 +39,13 @@ class SynchronizePhoneContacts
       end
     end
   end
+
+  def self.after_perform(user_id, phone_id, contacts_to_index_json_string)
+    user = User.find(user_id)
+    phone = user.phones.find(phone_id)
+
+    phone.contacts_last_synchronized = DateTime.now
+
+    phone.save
+  end
 end
