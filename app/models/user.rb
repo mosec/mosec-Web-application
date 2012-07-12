@@ -7,6 +7,6 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  has_many :sources, dependent: :delete_all
+  has_many :sources, dependent: :destroy
   has_many :phones
 end

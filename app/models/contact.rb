@@ -8,8 +8,8 @@ class Contact < ActiveRecord::Base
 	validates :uid, presence: true, uniqueness: { scope: [:contactable_id, :contactable_type] }
   validates :full_name, presence: true
 
-  has_many :phone_numbers, dependent: :delete_all
-  has_many :email_addresses, dependent: :delete_all
+  has_many :phone_numbers, dependent: :destroy
+  has_many :email_addresses, dependent: :destroy
 
   # phone_numbers parameter is an array of strings or a string
   def add_phone_numbers!(list_of_phone_numbers)

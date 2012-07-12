@@ -24,6 +24,7 @@ Radar::Application.routes.draw do
   resources :users, only: [:new, :create, :edit, :update]
   resource :user_session, only: [:new, :create, :destroy]
   resource :dashboard, only: [:show]
+  resources :sources, only: [:index, :destroy]
 
   # Sample resource route with options:
   #   resources :products do
