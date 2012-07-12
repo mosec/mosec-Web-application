@@ -19,36 +19,20 @@ class Phone < Source
   	[contacts_last_synchronized, calls_last_synchronized, text_messages_last_synchronized, calendar_events_last_synchronized].compact!.max
   end
 
-  def contacts_last_synchronized
-  	self.last_synchronizeds['contacts'].try(:to_datetime)
+  %w(contacts_last_synchronized calls_last_synchronized text_messages_last_synchronized calendar_events_last_synchronized).each do |method|
+  	define_method(method) do
+  		match = /\A(?<data_type>\w+)_last_synchronized\Z/.match(method)
+
+  		self.last_synchronizeds[match[:data_type]].try(:to_datetime)
+  	end
   end
 
-  def contacts_last_synchronized=(contacts_last_synchronized)
-  	self.last_synchronizeds['contacts'] = contacts_last_synchronized
-  end
+  %w(contacts_last_synchronized= calls_last_synchronized= text_messages_last_synchronized= calendar_events_last_synchronized=).each do |method|
+  	define_method(method) do |value|
+  		match = /\A(?<data_type>\w+)_last_synchronized=\Z/.match(method)
 
-  def calls_last_synchronized
-  	self.last_synchronizeds['calls'].try(:to_datetime)
-  end
-
-  def calls_last_synchronized=(calls_last_synchronized)
-  	self.last_synchronizeds['calls'] = calls_last_synchronized
-  end
-
-  def text_messages_last_synchronized
-  	self.last_synchronizeds['text_messages'].try(:to_datetime)
-  end
-
-  def text_messages_last_synchronized=(text_messages_last_synchronized)
-  	self.last_synchronizeds['text_messages'] = text_messages_last_synchronized
-  end
-
-  def calendar_events_last_synchronized
-  	self.last_synchronizeds['calendar_events'].try(:to_datetime)
-  end
-
-  def calendar_events_last_synchronized=(calendar_events_last_synchronized)
-  	self.last_synchronizeds['calendar_events'] = calendar_events_last_synchronized
+  		self.last_synchronizeds[match[:data_type]] = value
+  	end
   end
 
   private
