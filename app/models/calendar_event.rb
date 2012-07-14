@@ -26,6 +26,7 @@ class CalendarEvent < ActiveRecord::Base
   end
 
   def contact_ids
+    # TODO: Make user-wide not just contactable-wide
     Contact.joins(:email_addresses).where(:contactable_type => self.eventable.class.superclass.name, :contactable_id => self.eventable.id, :email_addresses => { :email_address => self.attendee_email_addresses }).collect {|contact| contact.id }
   end
 
