@@ -5,6 +5,8 @@ class Contact < ActiveRecord::Base
 
 	belongs_to :contactable, polymorphic: true
 
+  scope :alphabetical, order('full_name ASC')
+
 	attr_accessible :uid, :full_name
 
 	validates :uid, presence: true, uniqueness: { scope: [:contactable_id, :contactable_type] }

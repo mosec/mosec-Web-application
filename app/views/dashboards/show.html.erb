@@ -13,6 +13,8 @@
 	<%= submit_tag 'Search' %>
 <% end %>
 
-<ul>
-	<%= render @contacts %>
-</ul>
+<% if @contacts %>
+	<ul>
+		<%= render @contacts %>
+	</ul>
+<% end %>
