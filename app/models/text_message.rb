@@ -21,7 +21,12 @@ class TextMessage < ActiveRecord::Base
   validates :time, :presence => true, :numericality => true
 
   mapping do
+    indexes :user_id, type: :integer, as: Proc.new { user_id }
     indexes :body
+  end
+
+  def user_id
+    self.phone.user.id
   end
 
   # phone_number parameter is a string

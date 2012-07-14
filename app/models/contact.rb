@@ -14,7 +14,12 @@ class Contact < ActiveRecord::Base
   has_many :email_addresses, dependent: :destroy
 
   mapping do
+    indexes :user_id, type: :integer, as: Proc.new { user_id }
     indexes :full_name
+  end
+
+  def user_id
+    self.contactable.user.id
   end
 
   # phone_numbers parameter is an array of strings or a string

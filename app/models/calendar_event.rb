@@ -14,9 +14,14 @@ class CalendarEvent < ActiveRecord::Base
   validates :all_day, inclusion: { in: [true, false] }
 
   mapping do
+    indexes :user_id, type: :integer, as: Proc.new { user_id }
     indexes :title
     indexes :description
     indexes :location
+  end
+
+  def user_id
+    self.eventable.user.id
   end
 
   def attendee_email_addresses=(attendee_email_addresses)
