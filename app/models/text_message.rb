@@ -22,11 +22,16 @@ class TextMessage < ActiveRecord::Base
 
   mapping do
     indexes :user_id, type: :integer, as: Proc.new { user_id }
+    indexes :contact_ids, type: :integer, as: Proc.new { contact_ids }
     indexes :body
   end
 
   def user_id
     self.phone.user.id
+  end
+
+  def contact_ids
+    Contact.joins(:phone_numbers).where(:contactable_type => self.phone.class.superclass.name, :contactable_id => self.phone.id, :phone_numbers => { :clean_phone_number => self.clean_phone_number }).collect {|contact| contact.id }
   end
 
   # phone_number parameter is a string
