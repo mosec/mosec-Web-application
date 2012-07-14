@@ -17,12 +17,16 @@ class Call < ActiveRecord::Base
   validates :clean_phone_number, presence: true
   validates :duration, presence: true, numericality: true
   validates :time, presence: true, numericality: true
-  
+
   # phone_number parameter is a string
   def phone_number=(phone_number)
     super(phone_number)
     
     self.clean_phone_number = Expect.clean_phone_number(phone_number)
+  end
+
+  def time=(time)
+    self[:time] = Time.at(time).to_datetime
   end
 
   def incoming?

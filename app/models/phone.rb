@@ -10,9 +10,9 @@ class Phone < Source
   before_create :prepare_last_synchronizeds_attribute
 
   has_many :contacts, as: :contactable, dependent: :destroy
-  has_many :calls, dependent: :delete_all
-  has_many :text_messages, dependent: :delete_all
-  has_many :calendar_events, as: :eventable, dependent: :delete_all
+  has_many :calls, dependent: :destroy
+  has_many :text_messages, dependent: :destroy
+  has_many :calendar_events, as: :eventable, dependent: :destroy
 
   def operating_system=(operating_system)
     self.provider = operating_system

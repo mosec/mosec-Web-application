@@ -1,4 +1,4 @@
-<% if flash[:error] %>
+<% if flash[:error].present? %>
 	<%= flash[:error] %>
 <% end %>
 
@@ -7,7 +7,7 @@
 <%= form_tag user_session_path do %>
 	<p>
 		<%= label_tag :email_address %><br/>
-		<%= text_field_tag 'user_session[email_address]', (params[:user_session][:email_address] if params[:user_session]) %>
+		<%= text_field_tag 'user_session[email_address]', (params[:user_session][:email_address] if params[:user_session].present?) %>
 	</p>
 
 	<p>

@@ -1,9 +1,11 @@
-<h2><%= source.provider %></h2>
+<div class="source">
+	<h2><%= source.provider %></h2>
 
-<p>
-	<%= source.uid %>
-</p>
+	<p>
+		<%= source.uid %>
+	</p>
 
-<ul>
-	<li><%= link_to 'Unlink', source_path(source), method: :delete %></li>
-</ul>
+	<ul>
+		<li><%= link_to 'Unlink', source_path(source), method: :delete %></li>
+	</ul>
+</div>

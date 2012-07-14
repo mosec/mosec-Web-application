@@ -55,8 +55,8 @@ CREATE TABLE calendar_events (
     description text,
     location text,
     attendee_email_addresses character varying(255)[],
-    start_time integer NOT NULL,
-    end_time integer NOT NULL,
+    start_time timestamp without time zone NOT NULL,
+    end_time timestamp without time zone NOT NULL,
     all_day boolean NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -94,7 +94,7 @@ CREATE TABLE calls (
     phone_number character varying(255) NOT NULL,
     clean_phone_number character varying(255) NOT NULL,
     duration integer NOT NULL,
-    "time" integer NOT NULL,
+    "time" timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -237,6 +237,7 @@ CREATE TABLE sources (
     type character varying(255) NOT NULL,
     provider character varying(255) NOT NULL,
     uid character varying(255) NOT NULL,
+    queued_for_destruction boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     last_synchronizeds hstore
@@ -275,7 +276,7 @@ CREATE TABLE text_messages (
     phone_number character varying(255) NOT NULL,
     clean_phone_number character varying(255) NOT NULL,
     body text NOT NULL,
-    "time" integer NOT NULL,
+    "time" timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

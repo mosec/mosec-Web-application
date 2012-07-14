@@ -1,6 +1,8 @@
 class Contact < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
   include Expect
-  
+
 	belongs_to :contactable, polymorphic: true
 
 	attr_accessible :uid, :full_name
@@ -10,6 +12,10 @@ class Contact < ActiveRecord::Base
 
   has_many :phone_numbers, dependent: :destroy
   has_many :email_addresses, dependent: :destroy
+
+  mapping do
+    indexes :full_name
+  end
 
   # phone_numbers parameter is an array of strings or a string
   def add_phone_numbers!(list_of_phone_numbers)

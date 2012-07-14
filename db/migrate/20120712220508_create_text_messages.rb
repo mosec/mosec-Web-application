@@ -9,7 +9,7 @@ class CreateTextMessages < ActiveRecord::Migration
       t.string :phone_number, null: false
       t.string :clean_phone_number, null: false
       t.text :body, null: false
-      t.integer :time, null: false
+      t.datetime :time, null: false
       
       t.timestamps
     end

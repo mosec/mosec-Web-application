@@ -2,7 +2,7 @@ module Expect
   # Contact class returns "contact"
   # TextMessage class returns "text_message"
   def self.normalize_class_to_string(klass)
-    klass.to_s.underscore.downcase
+    klass.name.underscore.downcase
   end
   
   # list parameter is a comma-separated string or an array and returns an array of string(s)

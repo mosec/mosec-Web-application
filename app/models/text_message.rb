@@ -1,4 +1,6 @@
 class TextMessage < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
   include Expect
   
   belongs_to :phone
@@ -17,12 +19,20 @@ class TextMessage < ActiveRecord::Base
   validates :clean_phone_number, :presence => true
   validates :body, :presence => true
   validates :time, :presence => true, :numericality => true
-  
+
+  mapping do
+    indexes :body
+  end
+
   # phone_number parameter is a string
   def phone_number=(phone_number)
     super(phone_number)
     
     self.clean_phone_number = Expect.clean_phone_number(phone_number)
+  end
+
+  def time=(time)
+    self[:time] = Time.at(time).to_datetime
   end
   
   def incoming?

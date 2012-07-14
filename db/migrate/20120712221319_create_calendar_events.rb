@@ -8,8 +8,8 @@ class CreateCalendarEvents < ActiveRecord::Migration
       t.text :description
       t.text :location
       t.string_array :attendee_email_addresses
-      t.integer :start_time, null: false
-      t.integer :end_time, null: false
+      t.datetime :start_time, null: false
+      t.datetime :end_time, null: false
       t.boolean :all_day, null: false
       
       t.timestamps

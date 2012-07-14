@@ -9,6 +9,8 @@ class CreateSources < ActiveRecord::Migration
     	t.string :provider, null: false
     	t.string :uid, null: false
 
+      t.boolean :queued_for_destruction, default: false, null: false
+
       t.timestamps
     end
 

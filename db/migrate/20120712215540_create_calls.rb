@@ -8,7 +8,7 @@ class CreateCalls < ActiveRecord::Migration
       t.string :phone_number, null: false
       t.string :clean_phone_number, null: false
       t.integer :duration, null: false
-      t.integer :time, null: false
+      t.datetime :time, null: false
       
       t.timestamps
     end
