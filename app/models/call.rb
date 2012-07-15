@@ -1,4 +1,6 @@
 class Call < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
   include Expect
   
   belongs_to :phone
@@ -17,6 +19,20 @@ class Call < ActiveRecord::Base
   validates :clean_phone_number, presence: true
   validates :duration, presence: true, numericality: true
   validates :time, presence: true, numericality: true
+
+  mapping do
+    indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
+    indexes :contact_ids, type: :array, include_in_all: false, as: Proc.new { contact_ids }
+  end
+
+  def user_id
+    self.phone.user.id
+  end
+
+  def contact_ids
+    # TODO: Make user-wide not just contactable-wide
+    Contact.joins(:phone_numbers).where(:contactable_type => self.phone.class.superclass.name, :contactable_id => self.phone.id, :phone_numbers => { :clean_phone_number => self.clean_phone_number }).collect {|contact| contact.id }
+  end
 
   # phone_number parameter is a string
   def phone_number=(phone_number)

@@ -21,8 +21,8 @@ class TextMessage < ActiveRecord::Base
   validates :time, :presence => true, :numericality => true
 
   mapping do
-    indexes :user_id, type: :integer, as: Proc.new { user_id }
-    indexes :contact_ids, type: :integer, as: Proc.new { contact_ids }
+    indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
+    indexes :contact_ids, type: :array, include_in_all: false, as: Proc.new { contact_ids }
     indexes :body
   end
 

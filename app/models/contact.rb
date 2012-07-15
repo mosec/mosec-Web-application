@@ -16,7 +16,7 @@ class Contact < ActiveRecord::Base
   has_many :email_addresses, dependent: :destroy
 
   mapping do
-    indexes :user_id, type: :integer, as: Proc.new { user_id }
+    indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
     indexes :full_name
   end
 
