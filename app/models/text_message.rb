@@ -22,7 +22,7 @@ class TextMessage < ActiveRecord::Base
 
   mapping do
     indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
-    indexes :contact_ids, type: :array, include_in_all: false, as: Proc.new { contact_ids }
+    indexes :contact_ids, type: :integer, include_in_all: false, as: Proc.new { contact_ids }
     indexes :body
   end
 
