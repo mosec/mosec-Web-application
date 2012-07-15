@@ -2,7 +2,7 @@ class Search
 	PER_PAGE = 10
 
 	def self.search(user_id, params)
-		Tire.search([:contacts, :calls, :text_messages, :calendar_events], load: true) do |search|
+		Tire.search([:contacts, :calls, :text_messages, :calendar_events]) do |search|
 			user = User.find(user_id)
 
 			search.filter :term, :user_id => user.id

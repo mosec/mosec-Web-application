@@ -23,6 +23,11 @@ class Call < ActiveRecord::Base
   mapping do
     indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
     indexes :contact_ids, type: :integer, include_in_all: false, as: Proc.new { contact_ids }
+    indexes :call_type, type: :string, include_in_all: false
+    indexes :phone_number, type: :string, include_in_all: false
+    indexes :clean_phone_number, type: :string, include_in_all: false
+    indexes :duration, type: :integer, include_in_all: false
+    indexes :time, type: :date, include_in_all: false
   end
 
   def user_id

@@ -19,7 +19,7 @@ class Contact < ActiveRecord::Base
 
   mapping do
     indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
-    indexes :full_name
+    indexes :full_name, type: :string
   end
 
   def user_id

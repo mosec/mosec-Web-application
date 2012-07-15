@@ -23,7 +23,11 @@ class TextMessage < ActiveRecord::Base
   mapping do
     indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
     indexes :contact_ids, type: :integer, include_in_all: false, as: Proc.new { contact_ids }
-    indexes :body
+    indexes :phone_number, type: :string, include_in_all: false
+    indexes :clean_phone_number, type: :string, include_in_all: false
+    indexes :text_message_type, type: :string, include_in_all: false
+    indexes :thread_id, type: :string, include_in_all: false
+    indexes :body, type: :string
   end
 
   def user_id
