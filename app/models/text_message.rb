@@ -31,8 +31,7 @@ class TextMessage < ActiveRecord::Base
   end
 
   def contact_ids
-    # TODO: Make user-wide not just contactable-wide
-    Contact.joins(:phone_numbers).where(:contactable_type => self.phone.class.superclass.name, :contactable_id => self.phone.id, :phone_numbers => { :clean_phone_number => self.clean_phone_number }).collect {|contact| contact.id }
+    self.phone.user.contacts.includes(:phone_numbers).where(:phone_numbers => { :clean_phone_number => self.clean_phone_number }).collect {|contact| contact.id }
   end
 
   # phone_number parameter is a string

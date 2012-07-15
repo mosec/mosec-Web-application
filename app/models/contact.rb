@@ -12,6 +12,8 @@ class Contact < ActiveRecord::Base
 	validates :uid, presence: true, uniqueness: { scope: [:contactable_id, :contactable_type] }
   validates :full_name, presence: true
 
+  after_save :update_index
+
   has_many :phone_numbers, dependent: :destroy
   has_many :email_addresses, dependent: :destroy
 
@@ -69,5 +71,13 @@ class Contact < ActiveRecord::Base
     email_addresses = Expect.normalize_string_to_array(list_of_email_addresses)
     
     self.email_addresses.where('email_address NOT IN (?)', email_addresses).map(&:destroy)
+  end
+
+  private
+
+  def update_index
+    self.contactable.user.calls.each {|call| call.tire.update_index }
+    self.contactable.user.text_messages.each {|text_message| text_message.tire.update_index }
+    self.contactable.user.calendar_events.each {|calendar_event| calendar_event.tire.update_index }
   end
 end

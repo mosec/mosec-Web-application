@@ -9,4 +9,10 @@ class User < ActiveRecord::Base
 
   has_many :sources, dependent: :destroy
   has_many :phones
+
+  # TODO: make more flexible
+  has_many :contacts, through: :phones
+  has_many :calls, through: :phones
+  has_many :text_messages, through: :phones
+  has_many :calendar_events, through: :phones
 end

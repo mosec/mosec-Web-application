@@ -7,8 +7,7 @@ class Search
 
 			search.filter :term, :user_id => user.id
 
-			# TODO: user.phones.first.contacts
-			search.filter(:term, :contact_ids => params[:contact_id]) if (params[:contact_id].present? and user.phones.first.contacts.find(params[:contact_id]))
+			search.filter(:term, :contact_ids => params[:contact_id]) if (params[:contact_id].present? and user.contacts.find(params[:contact_id]))
 
 			search.query { string params[:query], default_operator: 'AND' } if params[:query].present?
 			page = (params[:page] || 1).to_i

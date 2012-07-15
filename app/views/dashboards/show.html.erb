@@ -13,12 +13,8 @@
 	<%= submit_tag 'Search' %>
 <% end %>
 
-<% if @contacts %>
-	<ul>
-		<%= render @contacts %>
-	</ul>
-<% end %>
+<ul>
+	<%= render @contacts %>
+</ul>
 
-<% if @activities %>
-	<%= render partial: 'search/results', locals: { :activities => @activities } %>
-<% end %>
+<%= render partial: 'search/results', locals: { :activities => @activities } %>
