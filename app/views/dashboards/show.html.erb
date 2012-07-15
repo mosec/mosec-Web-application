@@ -19,4 +19,6 @@
 	</ul>
 <% end %>
 
-<%= render partial: 'search/search', locals: { :activities => @activities } %>
+<% if @activities %>
+	<%= render partial: 'search/results', locals: { :activities => @activities } %>
+<% end %>
