@@ -14,8 +14,8 @@ class CalendarEvent < ActiveRecord::Base
   validates :all_day, inclusion: { in: [true, false] }
 
   mapping do
-    indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
-    indexes :contact_ids, type: :integer, include_in_all: false, as: Proc.new { contact_ids }
+    indexes :user_id, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { user_id }
+    indexes :contact_ids, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { contact_ids }
     indexes :title, type: :string
     indexes :description, type: :string
     indexes :location, type: :string
