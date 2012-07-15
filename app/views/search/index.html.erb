@@ -1,7 +1,5 @@
 <% if @results %>
 	<h2><%= pluralize @results.total, 'results' %></h2>
 
-	<%= render @results %>
-
-	<%= will_paginate @results %>
+	<%= render partial: 'search', locals: { :activities => @results } %>
 <% end %>

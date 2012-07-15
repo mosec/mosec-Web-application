@@ -10,3 +10,5 @@
 
 	<%= submit_tag 'Search' %>
 <% end %>
+
+<%= render partial: 'search/search', locals: { :activities => @activities } %>
