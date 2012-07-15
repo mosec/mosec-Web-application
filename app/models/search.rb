@@ -12,7 +12,7 @@ class Search
 
 			search.query do
 				boolean do
-					must { fuzzy :_all, params[:query] } if params[:query].present?
+					must { text :_all, params[:query] } if params[:query].present?
 				end
 			end
 
