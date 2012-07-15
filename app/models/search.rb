@@ -10,12 +10,7 @@ class Search
 			# TODO: user.phones.first.contacts
 			search.filter(:term, :contact_ids => params[:contact_id]) if (params[:contact_id].present? and user.phones.first.contacts.find(params[:contact_id]))
 
-			search.query do
-				boolean do
-					must { text :_all, params[:query] } if params[:query].present?
-				end
-			end
-
+			search.query { string params[:query], default_operator: 'AND' } if params[:query].present?
 			page = (params[:page] || 1).to_i
 
 			search.from (page - 1) * PER_PAGE
