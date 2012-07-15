@@ -12,10 +12,11 @@ class Contact < ActiveRecord::Base
 	validates :uid, presence: true, uniqueness: { scope: [:contactable_id, :contactable_type] }
   validates :full_name, presence: true
 
-  after_save :update_index
+  after_save :queue_update_index
+  after_destroy :queue_update_index
 
-  has_many :phone_numbers, dependent: :destroy
-  has_many :email_addresses, dependent: :destroy
+  has_many :phone_numbers, after_add: :queue_update_index, after_remove: :queue_update_index, dependent: :destroy
+  has_many :email_addresses, after_add: :queue_update_index, after_remove: :queue_update_index, dependent: :destroy
 
   mapping do
     indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
@@ -26,7 +27,7 @@ class Contact < ActiveRecord::Base
     self.contactable.user.id
   end
 
-  # phone_numbers parameter is an array of strings or a string
+  # phone_numbers parameter is a comma-separated list of strings or a string
   def add_phone_numbers!(list_of_phone_numbers)
     phone_numbers = Expect.normalize_string_to_array(list_of_phone_numbers)
     
@@ -44,14 +45,18 @@ class Contact < ActiveRecord::Base
     end
   end
   
-  # list_of_phone_numbers parameter is an array of strings or a string
+  # list_of_phone_numbers parameter is a comma-separated list of strings or a string
   def remove_phone_numbers_not_in_list!(list_of_phone_numbers)
     clean_phone_numbers = Expect.normalize_string_to_array(list_of_phone_numbers).map {|phone_number| Expect.clean_phone_number(phone_number) }
     
-    self.phone_numbers.where('clean_phone_number NOT IN (?)', clean_phone_numbers).map(&:destroy)
+    if clean_phone_numbers.any?
+      self.phone_numbers.where('clean_phone_number NOT IN (?)', clean_phone_numbers).map(&:destroy)
+    else
+      self.phone_numbers.destroy_all
+    end
   end
   
-  # email_addresses parameter is an array of strings or a string
+  # email_addresses parameter is a comma-separated list of strings or a string
   def add_email_addresses!(list_of_email_addresses)
     email_addresses = Expect.normalize_string_to_array(list_of_email_addresses)
     
@@ -70,14 +75,18 @@ class Contact < ActiveRecord::Base
   def remove_email_addresses_not_in_list!(list_of_email_addresses)
     email_addresses = Expect.normalize_string_to_array(list_of_email_addresses)
     
-    self.email_addresses.where('email_address NOT IN (?)', email_addresses).map(&:destroy)
+    if email_addresses.any?
+      self.email_addresses.where('email_address NOT IN (?)', email_addresses).map(&:destroy)
+    else
+      self.email_addresses.destroy_all
+    end
   end
 
   private
 
-  def update_index
-    self.contactable.user.calls.each {|call| call.tire.update_index }
-    self.contactable.user.text_messages.each {|text_message| text_message.tire.update_index }
-    self.contactable.user.calendar_events.each {|calendar_event| calendar_event.tire.update_index }
+  def queue_update_index(*arguments)
+    Resque.enqueue(UpdateIndex, self.contactable.user.id, 'call')
+    Resque.enqueue(UpdateIndex, self.contactable.user.id, 'text_message')
+    Resque.enqueue(UpdateIndex, self.contactable.user.id, 'calendar_event')
   end
 end
