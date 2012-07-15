@@ -41,11 +41,25 @@ class SynchronizePhoneContacts
   end
 
   def self.after_perform(user_id, phone_id, contacts_to_index_json_string)
+    set_phone_contacts_last_synchronized(user_id, phone_id, DateTime.now)
+
+    queue_update_index(user_id)
+  end
+
+  def self.set_phone_contacts_last_synchronized(user_id, phone_id, time)
     user = User.find(user_id)
     phone = user.phones.find(phone_id)
 
     phone.contacts_last_synchronized = DateTime.now
 
     phone.save
+  end
+
+  def self.queue_update_index(user_id)
+    user = User.find(user_id)
+
+    Resque.enqueue(UpdateIndex, user.id, 'call')
+    Resque.enqueue(UpdateIndex, user.id, 'text_message')
+    Resque.enqueue(UpdateIndex, user.id, 'calendar_event')
   end
 end

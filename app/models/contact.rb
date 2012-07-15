@@ -12,11 +12,8 @@ class Contact < ActiveRecord::Base
 	validates :uid, presence: true, uniqueness: { scope: [:contactable_id, :contactable_type] }
   validates :full_name, presence: true
 
-  after_save :queue_update_index
-  after_destroy :queue_update_index
-
-  has_many :phone_numbers, after_add: :queue_update_index, after_remove: :queue_update_index, dependent: :destroy
-  has_many :email_addresses, after_add: :queue_update_index, after_remove: :queue_update_index, dependent: :destroy
+  has_many :phone_numbers, dependent: :destroy
+  has_many :email_addresses, dependent: :destroy
 
   mapping do
     indexes :user_id, type: :integer, include_in_all: false, as: Proc.new { user_id }
@@ -80,13 +77,5 @@ class Contact < ActiveRecord::Base
     else
       self.email_addresses.destroy_all
     end
-  end
-
-  private
-
-  def queue_update_index(*arguments)
-    Resque.enqueue(UpdateIndex, self.contactable.user.id, 'call')
-    Resque.enqueue(UpdateIndex, self.contactable.user.id, 'text_message')
-    Resque.enqueue(UpdateIndex, self.contactable.user.id, 'calendar_event')
   end
 end
