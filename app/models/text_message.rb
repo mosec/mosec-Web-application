@@ -28,6 +28,7 @@ class TextMessage < ActiveRecord::Base
     indexes :text_message_type, type: :string, include_in_all: false
     indexes :thread_id, type: :string, index: :not_analyzed, include_in_all: false
     indexes :body, type: :string
+    indexes :time, type: :date, include_in_all: false
   end
 
   def user_id

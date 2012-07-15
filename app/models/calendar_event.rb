@@ -20,6 +20,7 @@ class CalendarEvent < ActiveRecord::Base
     indexes :description, type: :string
     indexes :location, type: :string
     indexes :attendee_email_addresses, type: :string, include_in_all: false
+    indexes :time, type: :date, include_in_all: false, as: Proc.new { start_time }
     indexes :start_time, type: :date, include_in_all: false
     indexes :end_time, type: :date, include_in_all: false
     indexes :all_day, type: :boolean, include_in_all: false
