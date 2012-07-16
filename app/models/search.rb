@@ -29,7 +29,7 @@ class Search
 			search.filter(:term, { _type: params[:data_type] }) if params[:data_type].present?
 
 			# if there is a query, use it to search
-			search.query { string params[:query], default_operator: 'AND' } if params[:query].present?
+			search.query { text :_all, params[:query] } if params[:query].present?
 
 			# if there is no query, sort by time
 			# else by default, sort by relevance
