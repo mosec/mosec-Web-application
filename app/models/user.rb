@@ -7,8 +7,16 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  has_many :sources, dependent: :destroy
+  has_many :sources, dependent: :destroy do
+    def create_with_omniauth(authentication_attributes)
+      proxy_association.create({
+        provider: authentication_attributes['provider'],
+        uid: authentication_attributes['uid']
+      })
+    end
+  end
   has_many :phones
+  has_many :email_accounts
 
   # TODO: make more flexible
   has_many :contacts, through: :phones

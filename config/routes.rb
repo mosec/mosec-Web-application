@@ -9,6 +9,8 @@ Radar::Application.routes.draw do
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
+  match '/auth/:provider/callback' => 'sources#create'
+  match '/auth/failure' => 'sources#index'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
@@ -18,7 +20,7 @@ Radar::Application.routes.draw do
   match '/logout' => 'user_sessions#destroy', as: :logout
   match '/account' => 'users#edit', as: :account
   match '/dashboard' => 'dashboards#show', as: :dashboard
-  match '/services' => 'sources#index', as: :services
+  match '/linked_accounts' => 'sources#index', as: :linked_accounts
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products

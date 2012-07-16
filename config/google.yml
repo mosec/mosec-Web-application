@@ -1,0 +1,7 @@
+development:
+    consumer_key: anonymous
+    consumer_secret: anonymous
+
+production:
+    consumer_key: setradar.com
+    consumer_secret: AWmU1mrt6V3cRNpDevJ-8bpp

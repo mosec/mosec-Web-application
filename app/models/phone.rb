@@ -3,8 +3,6 @@ class Phone < Source
 
   PHONES = [ANDROID]
 
-  attr_accessible :operating_system
-
   validates :provider, inclusion: { in: PHONES }
 
   before_create :prepare_last_synchronizeds_attribute
@@ -13,10 +11,6 @@ class Phone < Source
   has_many :calls, dependent: :destroy
   has_many :text_messages, dependent: :destroy
   has_many :calendar_events, as: :eventable, dependent: :destroy
-
-  def operating_system=(operating_system)
-    self.provider = operating_system
-  end
 
   def last_synchronized
   	[contacts_last_synchronized, calls_last_synchronized, text_messages_last_synchronized, calendar_events_last_synchronized].compact.max

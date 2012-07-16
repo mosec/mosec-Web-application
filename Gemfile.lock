@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/davidkpham/omniauth-google.git
+  revision: 5f9d483998d3d27be330f80afd4fdc08593a6462
+  specs:
+    omniauth-google (1.0.1)
+      multi_json
+      omniauth (~> 1.0)
+      omniauth-oauth
+
+GIT
   remote: git://github.com/softa/activerecord-postgres-hstore.git
   revision: 93c6c88a506970204965f3902e19d18d65b05e09
   specs:
@@ -57,6 +66,7 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    hashie (1.2.0)
     hashr (0.0.21)
     hike (1.2.1)
     i18n (0.6.0)
@@ -73,7 +83,14 @@ GEM
     mime-types (1.19)
     multi_json (1.3.6)
     numerizer (0.1.1)
+    oauth (0.4.6)
     oj (1.3.0)
+    omniauth (1.1.0)
+      hashie (~> 1.2)
+      rack
+    omniauth-oauth (1.0.1)
+      oauth
+      omniauth (~> 1.0)
     pg (0.14.0)
     polyglot (0.3.3)
     rack (1.4.1)
@@ -164,6 +181,7 @@ DEPENDENCIES
   jquery-rails (~> 2.0.2)
   multi_json (~> 1.3.6)
   oj (~> 1.3.0)
+  omniauth-google!
   pg (~> 0.14.0)
   rails (= 3.2.6)
   resque (~> 1.21.0)
