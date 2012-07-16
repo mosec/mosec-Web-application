@@ -240,7 +240,11 @@ CREATE TABLE sources (
     queued_for_destruction boolean DEFAULT false NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    last_synchronizeds hstore
+    last_synchronizeds hstore,
+    email_address character varying(255),
+    access_token character varying(255),
+    access_secret character varying(255),
+    context_io_source_label character varying(255)
 );
 
 
@@ -310,6 +314,8 @@ CREATE TABLE users (
     full_name character varying(255) NOT NULL,
     email_address character varying(255) NOT NULL,
     password_digest character varying(255) NOT NULL,
+    context_io_account_id character varying(255) NOT NULL,
+    context_io_web_hook_id character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     time_zone character varying(255) DEFAULT 'Eastern Time (US & Canada)'::character varying NOT NULL
@@ -615,3 +621,5 @@ INSERT INTO schema_migrations (version) VALUES ('20120712215540');
 INSERT INTO schema_migrations (version) VALUES ('20120712220508');
 
 INSERT INTO schema_migrations (version) VALUES ('20120712221319');
+
+INSERT INTO schema_migrations (version) VALUES ('20120716223712');

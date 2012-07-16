@@ -18,10 +18,10 @@ class UserSessionsController < ApplicationController
           redirect_to dashboard_url
         }
         format.json {
-          phone = current_user.sources.where(provider: params[:source][:provider], uid: params[:source][:uid]).first
+          phone = current_user.phones.where(provider: params[:source][:provider], uid: params[:source][:uid]).first
 
           unless phone
-            phone = current_user.sources.create!(params[:source])
+            phone = current_user.phones.create!(params[:source])
           end
 
           cookies.signed.permanent[:phone_id] = phone.id

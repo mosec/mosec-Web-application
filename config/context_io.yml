@@ -1,0 +1,21 @@
+development:
+    consumer_key: 1c8jyjxs
+    consumer_secret: WBTMsHjkKjlrIRxi
+    web_hook_callback_url: https://setradar.showoff.io/emails/
+    web_hook_failure_notification_url: https://setradar.showoff.io/emails/failure
+    web_hook_synchronization_period: 0
+    source_type: IMAP
+    source_service_level: PRO
+    source_synchronization_period: 1h
+    source_callback_url: https://setradar.showoff.io/email_accounts/ready
+
+production:
+    consumer_key: jh67dsyf
+    consumer_secret: 0VPCLE91zgmYUCtF
+    web_hook_callback_url: https://setradar.com/emails/
+    web_hook_failure_notification_url: https://setradar.com/emails/failure
+    web_hook_synchronization_period: 0
+    source_type: IMAP
+    source_service_level: PRO
+    source_synchronization_period: 1h
+    source_callback_url: https://setradar.com/email_accounts/ready

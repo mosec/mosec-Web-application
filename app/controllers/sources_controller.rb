@@ -8,10 +8,14 @@ class SourcesController < ApplicationController
 	def create
 		authentication_attributes = request.env['omniauth.auth']
 
-		source = current_user.sources.where(provider: authentication_attributes['provider'], uid: authentication_attributes['uid']).first
+		provider = authentication_attributes['provider']
 
-		unless source
-			source = current_user.sources.create_with_omniauth(authentication_attributes)
+		if EmailAccount::EMAIL_ACCOUNTS.include?(provider)
+			email_account = current_user.email_accounts.where(provider: provider, uid: authentication_attributes['uid']).first
+
+			unless email_account
+				email_account = current_user.email_accounts.create_with_omniauth(authentication_attributes)
+			end
 		end
 
 		redirect_to linked_accounts_url

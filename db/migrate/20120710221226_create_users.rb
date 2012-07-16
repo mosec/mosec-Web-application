@@ -4,6 +4,8 @@ class CreateUsers < ActiveRecord::Migration
     	t.string :full_name, null: false
     	t.string :email_address, null: false
     	t.string :password_digest, null: false
+    	t.string :context_io_account_id, null: false
+      t.string :context_io_web_hook_id, null: false
       t.timestamps
     end
 

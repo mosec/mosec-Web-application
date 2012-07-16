@@ -47,6 +47,16 @@ Radar::Application.routes.draw do
       post :synchronize, defaults: { format: :json }
     end
   end
+  resources :email_accounts, only: [] do
+    collection do
+      post :ready
+    end
+  end
+  resources :emails, only: [:create] do
+    collection do
+      post :failure
+    end
+  end
 
   # Sample resource route with sub-resources:
   #   resources :products do
