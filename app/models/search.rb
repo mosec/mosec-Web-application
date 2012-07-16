@@ -16,10 +16,17 @@ class Search
 		Tire.search([:contacts, :calls, :text_messages, :calendar_events]) do |search|
 			user = User.find(user_id)
 
-			search.filter :term, :user_id => user.id
+			user_id_filter = { user_id: user.id }
+
+			contact_ids_filter = { contact_ids: params[:contact_id] }
+			contact_ids_filter_ok = params[:contact_id].present? and user.contacts.find(params[:contact_id])
+
+			search.filter :term, user_id_filter
 
 			# if the scope is contact and the contact belongs to the user (to prevent a user from searching other peoples' contacts' data), search just the contact's data
-			search.filter(:term, :contact_ids => params[:contact_id]) if (params[:contact_id].present? and user.contacts.find(params[:contact_id]))
+			search.filter(:term, contact_ids_filter) if contact_ids_filter_ok
+
+			search.filter(:term, { _type: params[:data_type] }) if params[:data_type].present?
 
 			# if there is a query, use it to search
 			search.query { string params[:query], default_operator: 'AND' } if params[:query].present?
@@ -27,6 +34,10 @@ class Search
 			# if there is no query, sort by time
 			# else by default, sort by relevance
 			search.sort { by :time, 'desc' } if params[:query].blank?
+
+			search.facet(:data_types, { facet_filter: { term: contact_ids_filter_ok ? user_id_filter.merge(contact_ids_filter) : user_id_filter } }) do
+				terms :_type
+			end
 
 			page = (params[:page] || 1).to_i
 
