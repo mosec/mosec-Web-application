@@ -1,9 +1,3 @@
 <h2><%= pluralize @results.total, 'results' %></h2>
 
-<% @results.facets['data_types']['terms'].each do |facet| %>
-	<li>
-		<%= link_to_unless_current facet['term'], search_index_path(params.merge(data_type: facet['term'])) %>
-	</li>
-<% end %>
-
 <%= render partial: 'results', locals: { :activities => @results } %>

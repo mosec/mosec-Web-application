@@ -1,3 +1,9 @@
+<% activities.facets['data_types']['terms'].each do |facet| %>
+	<li>
+		<%= link_to_unless_current facet['term'], search_index_path(params.merge(data_type: facet['term'])) %>
+	</li>
+<% end %>
+
 <%= render activities %>
 
 <%= will_paginate activities %>
