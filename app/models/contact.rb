@@ -15,9 +15,26 @@ class Contact < ActiveRecord::Base
   has_many :phone_numbers, dependent: :destroy
   has_many :email_addresses, dependent: :destroy
 
-  mapping do
-    indexes :user_id, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { user_id }
-    indexes :full_name, type: :string
+  settings analysis: {
+    filter: {
+      ngram_filter: {
+        type: 'nGram',
+        min_gram: 3,
+        max_gram: 10
+      }
+    },
+    analyzer: {
+      ngram_analyzer: {
+        tokenizer: :lowercase,
+        filter: [:ngram_filter],
+        type: :custom
+      }
+    }
+  } do 
+    mapping _all: { analyzer: :ngram_analyzer } do
+      indexes :user_id, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { user_id }
+      indexes :full_name, type: :string, analyzer: :ngram_analyzer
+    end
   end
 
   def user_id

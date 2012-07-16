@@ -12,18 +12,35 @@ class CalendarEvent < ActiveRecord::Base
   validates :start_time, presence: true, numericality: true
   validates :end_time, presence: true, numericality: true
   validates :all_day, inclusion: { in: [true, false] }
-
-  mapping do
-    indexes :user_id, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { user_id }
-    indexes :contact_ids, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { contact_ids }
-    indexes :title, type: :string
-    indexes :description, type: :string
-    indexes :location, type: :string
-    indexes :attendee_email_addresses, type: :string, include_in_all: false
-    indexes :time, type: :date, include_in_all: false, as: Proc.new { start_time }
-    indexes :start_time, type: :date, include_in_all: false
-    indexes :end_time, type: :date, include_in_all: false
-    indexes :all_day, type: :boolean, include_in_all: false
+  
+  settings analysis: {
+    filter: {
+      ngram_filter: {
+        type: 'nGram',
+        min_gram: 3,
+        max_gram: 10
+      }
+    },
+    analyzer: {
+      ngram_analyzer: {
+        tokenizer: :lowercase,
+        filter: [:ngram_filter],
+        type: :custom
+      }
+    }
+  } do 
+    mapping _all: { analyzer: :ngram_analyzer } do
+      indexes :user_id, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { user_id }
+      indexes :contact_ids, type: :integer, index: :not_analyzed, include_in_all: false, as: Proc.new { contact_ids }
+      indexes :title, type: :string, analyzer: :ngram_analyzer
+      indexes :description, type: :string, analyzer: :ngram_analyzer
+      indexes :location, type: :string, analyzer: :ngram_analyzer
+      indexes :attendee_email_addresses, type: :string, include_in_all: false
+      indexes :time, type: :date, include_in_all: false, as: Proc.new { start_time }
+      indexes :start_time, type: :date, include_in_all: false
+      indexes :end_time, type: :date, include_in_all: false
+      indexes :all_day, type: :boolean, include_in_all: false
+    end
   end
 
   def user_id
